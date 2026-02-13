@@ -1,11 +1,11 @@
 import axios from "axios";
-import { AUTH_SERVER_URL } from './env.ts';
-import { TIMEOUT } from './env.ts';
 
-const api = axios.create({
+import { TIMEOUT, AUTH_SERVER_URL } from "../env";
+
+const authApi = axios.create({
   baseURL: AUTH_SERVER_URL,
   timeout: TIMEOUT,
-  withCredentials:true
+  withCredentials: true,
 });
 
-export default api;
+export default authApi;
