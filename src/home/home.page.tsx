@@ -44,13 +44,11 @@ const HomePage = () => {
           boxShadow: "0 10px 25px rgba(0,0,0,0.08)",
         }}
       >
-        {/* Header */}
         <div style={{ textAlign: "center", marginBottom: "20px" }}>
           <h2 style={{ margin: 0 }}>{user.username}</h2>
           <p style={{ color: "gray", marginTop: "5px" }}>{user.email}</p>
         </div>
 
-        {/* Basic Info */}
         <div style={{ marginBottom: "15px" }}>
           <strong>Department:</strong> {user.department}
         </div>
@@ -81,7 +79,6 @@ const HomePage = () => {
           </span>
         </div>
 
-        {/* Skills */}
         <div style={{ marginBottom: "15px" }}>
           <strong>Skills:</strong>
           <div
@@ -108,7 +105,6 @@ const HomePage = () => {
           </div>
         </div>
 
-        {/* Description */}
         <div>
           <strong>About:</strong>
           <p style={{ marginTop: "8px", fontSize: "14px", lineHeight: "1.6" }}>
