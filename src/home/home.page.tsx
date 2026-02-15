@@ -1,115 +1,128 @@
 import React, { useEffect, useState } from "react";
+import OneTeamsLogo from "../assets/OneTeamsLogo.svg";
+import { ArrowRight, UserLock } from "lucide-react";
+
+const SSO_URL =
+  "http://localhost:5173/sso?client_id=oneapp1&redirect_uri=http://localhost:5176/callback&state=asdfghjk4";
 
 const HomePage = () => {
   const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("userdata");
-
     if (!storedUser) {
-      window.location.href =
-        "http://localhost:5173/sso?client_id=oneapp1&redirect_uri=http://localhost:5176/callback&state=asdfghjk4";
+      setLoading(false);
       return;
     }
-
     try {
       const parsedUser = JSON.parse(storedUser);
       setUser(parsedUser);
     } catch {
       localStorage.removeItem("userdata");
-      window.location.href =
-        "http://localhost:5173/sso?client_id=oneapp1&redirect_uri=http://localhost:5176/callback&state=asdfghjk4";
     }
+    setLoading(false);
   }, []);
 
-  if (!user) return null;
+  const login = () => {
+    window.location.href = SSO_URL;
+  };
+
+  const logout = () => {
+    localStorage.removeItem("userdata");
+    setUser(null);
+  };
+
+  if (loading) return null;
+
+  if (!user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-6">
+        <div className="w-full max-w-7xl grid md:grid-cols-2 items-center gap-16">
+          <div className="flex justify-center md:justify-end relative">
+            <div className="absolute w-96 h-96 rounded-full opacity-30"></div>
+            <img
+              src={OneTeamsLogo}
+              className="relative h-80 w-auto transition duration-700 hover:scale-105"
+              alt="OneTeams Logo"
+            />
+          </div>
+
+          <div className="space-y-10">
+            <div className="space-y-4">
+              <h1 className="text-4xl font-semibold text-gray-800 leading-tight">
+                One <span className="text-sky-500">Teams</span> needs authentication
+              </h1>
+              <p className="text-gray-500 text-base leading-relaxed max-w-md">
+                To continue, verify your identity using
+                <span className="font-medium text-sky-600"> OneAuth</span>.
+              </p>
+            </div>
+
+            <button
+              onClick={login}
+              className="group bg-white px-6 py-4 rounded-2xl border border-sky-100 shadow-sm hover:shadow-lg transition-all duration-300 flex items-center gap-4 active:scale-95"
+            >
+              <UserLock className="text-sky-500" />
+              <div className="text-left">
+                <p className="text-sm font-semibold text-gray-800">
+                  Continue with One Account
+                </p>
+                <p className="text-xs text-gray-500">For all your workspaces</p>
+              </div>
+              <ArrowRight className="w-4 h-4 text-sky-600 transition-transform duration-300 group-hover:translate-x-1 ml-2" />
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        background: "linear-gradient(to right, #e0f2fe, #f8fafc)",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: "20px",
-      }}
-    >
-      <div
-        style={{
-          background: "white",
-          width: "500px",
-          borderRadius: "16px",
-          padding: "30px",
-          boxShadow: "0 10px 25px rgba(0,0,0,0.08)",
-        }}
-      >
-        <div style={{ textAlign: "center", marginBottom: "20px" }}>
-          <h2 style={{ margin: 0 }}>{user.username}</h2>
-          <p style={{ color: "gray", marginTop: "5px" }}>{user.email}</p>
+    <div className="min-h-screen flex items-center justify-center px-6">
+      <div className="w-full max-w-lg bg-white rounded-3xl p-10 space-y-8 shadow-xl border border-sky-100">
+        <div className="text-center space-y-2">
+          <h2 className="text-2xl font-semibold text-gray-800">{user.username}</h2>
+          <p className="text-sm text-gray-500">{user.email}</p>
         </div>
 
-        <div style={{ marginBottom: "15px" }}>
-          <strong>Department:</strong> {user.department}
-        </div>
-
-        <div style={{ marginBottom: "15px" }}>
-          <strong>Role:</strong>{" "}
-          <span
-            style={{
-              background: "#e0f2fe",
-              padding: "4px 10px",
-              borderRadius: "20px",
-              fontSize: "14px",
-            }}
-          >
-            {user.role}
-          </span>
-        </div>
-
-        <div style={{ marginBottom: "15px" }}>
-          <strong>Status:</strong>{" "}
-          <span
-            style={{
-              color: user.isAvailable ? "green" : "red",
-              fontWeight: 600,
-            }}
-          >
-            {user.isAvailable ? "Available" : "Not Available"}
-          </span>
-        </div>
-
-        <div style={{ marginBottom: "15px" }}>
-          <strong>Skills:</strong>
-          <div
-            style={{
-              marginTop: "8px",
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "8px",
-            }}
-          >
-            {user.skills?.map((skill: string, index: number) => (
-              <span
-                key={index}
-                style={{
-                  background: "#f1f5f9",
-                  padding: "6px 12px",
-                  borderRadius: "20px",
-                  fontSize: "13px",
-                }}
-              >
-                {skill}
-              </span>
-            ))}
+        <div className="space-y-4 text-sm text-gray-700">
+          <div>
+            <span className="font-medium">Department:</span> {user.department}
+          </div>
+          <div>
+            <span className="font-medium">Role:</span>{" "}
+            <span className="px-3 py-1 rounded-full bg-sky-100 text-sky-700 text-xs">{user.role}</span>
+          </div>
+          <div>
+            <span className="font-medium">Status:</span>{" "}
+            <span className={`font-medium ${user.isAvailable ? "text-green-600" : "text-red-600"}`}>
+              {user.isAvailable ? "Available" : "Not Available"}
+            </span>
+          </div>
+          <div>
+            <span className="font-medium">Skills:</span>
+            <div className="flex flex-wrap gap-2 mt-2">
+              {user.skills?.map((skill: string, index: number) => (
+                <span key={index} className="px-3 py-1 bg-gray-100 rounded-full text-xs">
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div>
+            <span className="font-medium">About:</span>
+            <p className="mt-2 text-gray-600 text-sm leading-relaxed">{user.description}</p>
           </div>
         </div>
 
-        <div>
-          <strong>About:</strong>
-          <p style={{ marginTop: "8px", fontSize: "14px", lineHeight: "1.6" }}>
-            {user.description}
-          </p>
+        <div className="pt-4">
+          <button
+            onClick={logout}
+            className="w-full bg-red-500 text-white py-3 rounded-xl text-sm font-medium transition-all duration-300 hover:bg-red-600 active:scale-95"
+          >
+            Logout
+          </button>
         </div>
       </div>
     </div>
