@@ -1,8 +1,7 @@
 import { Route, Routes } from "react-router-dom";
-import CallBackPage from "./callback/callback.page";
+import CallBackPage from "./oAuth/callback.page";
 import HomePage from "./home/home.page";
 import OAuthPage from "./oAuth/auth.page";
-
 import GuestRoute from "./routes/guest.route";
 import AuthorizedRoute from "./routes/authorize.route";
 

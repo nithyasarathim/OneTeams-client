@@ -6,6 +6,10 @@ interface GuestRouteProps {
   children: ReactNode;
 }
 
+interface ValidateResponse {
+  success: boolean;
+}
+
 const GuestRoute = ({ children }: GuestRouteProps) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -13,9 +17,9 @@ const GuestRoute = ({ children }: GuestRouteProps) => {
   useEffect(() => {
     const validateSession = async () => {
       try {
-        const res = await api.get("/sso/validate");
+        const res = await api.get<unknown, ValidateResponse>("/sso/validate");
 
-        if (res?.success!) {
+        if (res?.success) {
           navigate("/", { replace: true });
           return;
         }
