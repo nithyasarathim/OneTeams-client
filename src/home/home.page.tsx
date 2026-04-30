@@ -15,60 +15,46 @@ const HomePage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-        <div className="flex justify-between items-center p-6 border-b border-gray-100">
-          <h1 className="text-2xl font-bold text-gray-800">
-            Welcome,{" "}
-            <span className="text-blue-600">{user.username || "User"}</span>
-          </h1>
-          <LogoutButton />
+    <div className="min-h-screen bg-gray-50 p-6 flex flex-col items-center justify-center">
+      <div className="max-w-md w-full bg-white rounded-xl shadow-lg overflow-hidden p-8 text-center">
+        <div className="flex justify-center mb-4">
+          <img
+            src={user.profileUrl}
+            alt={user.username}
+            className="w-24 h-24 rounded-full border-4 border-blue-500 object-cover"
+          />
         </div>
 
-        <div className="p-6 space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="p-4 bg-gray-50 rounded-md">
-              <p className="text-sm text-gray-500 uppercase font-semibold">
-                Role
-              </p>
-              <p className="text-gray-800">{user.role}</p>
-            </div>
-            <div className="p-4 bg-gray-50 rounded-md">
-              <p className="text-sm text-gray-500 uppercase font-semibold">
-                Department
-              </p>
-              <p className="text-gray-800">{user.department}</p>
-            </div>
-          </div>
+        <h1 className="text-2xl font-bold text-gray-800 mb-1">
+          {user.username}
+        </h1>
+        <p className="text-gray-500 text-sm mb-4">{user.email}</p>
 
-          <div className="p-4 bg-gray-50 rounded-md">
-            <p className="text-sm text-gray-500 uppercase font-semibold">
-              Description
-            </p>
-            <p className="text-gray-800 italic">
-              {user.description || "No description provided."}
-            </p>
-          </div>
+        <p className="text-gray-600 italic mb-8">
+          "{user.description || "No description provided."}"
+        </p>
 
-          <div className="flex items-center space-x-2">
-            <span className="text-sm text-gray-500 uppercase font-semibold">
-              Status:
-            </span>
-            <span
-              className={`px-2 py-1 rounded text-xs font-bold ${user.isAvailable ? "bg-green-100 text-green-700" : "bg-gray-200 text-gray-700"}`}
-            >
-              {user.isAvailable ? "AVAILABLE" : "UNAVAILABLE"}
-            </span>
-          </div>
+        <div className="flex flex-col space-y-3 mb-8">
+          <a
+            href={user.linkedinUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full py-2 px-4 bg-[#0077b5] text-white rounded-md font-medium hover:bg-opacity-90 transition"
+          >
+            LinkedIn Profile
+          </a>
+          <a
+            href={user.githubUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full py-2 px-4 bg-[#24292e] text-white rounded-md font-medium hover:bg-opacity-90 transition"
+          >
+            GitHub Profile
+          </a>
+        </div>
 
-          <div className="mt-8">
-            <h3 className="text-sm font-semibold text-gray-400 mb-2 uppercase">
-              Raw User Data
-            </h3>
-            <pre className="bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto text-sm leading-relaxed">
-              {JSON.stringify(user, null, 2)}
-            </pre>
-          </div>
+        <div className="border-t pt-6">
+          <LogoutButton />
         </div>
       </div>
     </div>
